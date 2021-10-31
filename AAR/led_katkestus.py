@@ -68,8 +68,6 @@ try:
             lülita_sisse(valge_led)
             lülita_välja(nuppu_led)
             nupp_vajutatud = False
-        else:
-            lülita_sisse(punane_led)
 
         time.sleep(5)
         lülita_välja(valge_led)
