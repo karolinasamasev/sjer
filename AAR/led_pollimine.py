@@ -2,23 +2,19 @@
 import RPi.GPIO as GPIO
 import time
 
-#BCM or baoard
+#Board
 GPIO.setmode(GPIO.BOARD)
 #to disable warnings
 GPIO.setwarnings(False)
 
 punane_led = 3
-
 kollane_led = 5
-
 roheline_led = 7
 
 sinine_led = 8 # Punane jalakäijate jaoks
-
 valge_led = 10 # Roheline jalakäijate jaoks
 
 nuppu_led = 12
-
 nupp = 37
 
 nupp_vajutatud = False
@@ -61,8 +57,8 @@ def vilgub(tulukene):
     
 def poll(nuppu_kanal):
     global nupp_vajutatud
-    print(GPIO.input(37))
-    if GPIO.input(37):
+    print(GPIO.input(nuppu_kanal)) # Inputi kontroll
+    if GPIO.input(nuppu_kanal):
         nupp_vajutatud = True
         lülita_sisse(nuppu_led)
 
