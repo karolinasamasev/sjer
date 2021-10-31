@@ -56,11 +56,11 @@ def vilgub(tulukene):
     poll(nupp)
     
 def poll(nuppu_kanal):
-    global nupp_vajutatud
     print(GPIO.input(nuppu_kanal)) # Inputi kontroll
+    global nupp_vajutatud
     if GPIO.input(nuppu_kanal):
-        nupp_vajutatud = True
         lülita_sisse(nuppu_led)
+        nupp_vajutatud = True
 
 #Foori töö tsükklis
 try:
@@ -77,9 +77,6 @@ try:
             lülita_välja(nuppu_led)
             poll(nupp)
             nupp_vajutatud = False
-            poll(nupp)
-        else:
-            lülita_sisse(punane_led)
             poll(nupp)
 
         time.sleep(5)
