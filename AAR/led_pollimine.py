@@ -7,14 +7,31 @@ GPIO.setmode(GPIO.BOARD)
 #to disable warnings
 GPIO.setwarnings(False)
 
+punane_led = 3
+
+kollane_led = 5
+
+roheline_led = 7
+
+sinine_led = 8 # Punane jalakäijate jaoks
+
+valge_led = 10 # Roheline jalakäijate jaoks
+
+nuppu_led = 12
+
+nupp = 37
+
+nupp_vajutatud = False
+
+
 #set gpio... as an output
-GPIO.setup(37, GPIO.OUT)
-GPIO.setup(18, GPIO.OUT)
-GPIO.setup(22, GPIO.OUT)
-GPIO.setup(11, GPIO.OUT)
-GPIO.setup(31, GPIO.OUT)
-GPIO.setup(13, GPIO.OUT)
-GPIO.setup(16, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+GPIO.setup(punane_led, GPIO.OUT)
+GPIO.setup(kollane_led, GPIO.OUT)
+GPIO.setup(roheline_led, GPIO.OUT)
+GPIO.setup(sinine_led, GPIO.OUT)
+GPIO.setup(valge_led, GPIO.OUT)
+GPIO.setup(nuppu_led, GPIO.OUT, initial = GPIO.LOW)
+GPIO.setup(nupp, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
 
 #Definitsioonid
 def lülita_sisse(tulukene):
@@ -24,58 +41,77 @@ def lülita_välja(tulukene):
     GPIO.output(tulukene, GPIO.LOW)
 
 def vilgub(tulukene):
-    for i in range(3):
+    poll(nupp)
+    for i in range(2):
+        poll(nupp)
         lülita_sisse(tulukene)
-        ajavott(1/3)
+        poll(nupp)
+        time.sleep(0.4)
+        poll(nupp)
         lülita_välja(tulukene)
-        ajavott(1/3)
-
-sininee=0
-roheline=0
-def ajavott(ootamine):
-    aeg=time.time()
-    muutuja=0
-    global sininee
-    while True:
-        muutuja=time.time()
-        if GPIO.input(nupp)==GPIO.HIGH:
-            lülita_sisse(sinine)
-            sininee=1
-        if muutuja>=aeg+ootamine:
-            break
-
-#Muutujad
-punane_jalakaijad=37
-punane_auto=18
-kollane=22
-roheline_auto=11
-roheline_jalakaijad=31
-sinine=13
-nupp=16
-
+        poll(nupp)
+        time.sleep(0.4)
+        poll(nupp)
+    lülita_sisse(tulukene)
+    poll(nupp)
+    time.sleep(0.4)
+    poll(nupp)
+    lülita_välja(tulukene)
+    poll(nupp)
+    
+def poll(nuppu_kanal):
+    global nupp_vajutatud
+    print(GPIO.input(37))
+    if GPIO.input(37):
+        nupp_vajutatud = True
+        lülita_sisse(nuppu_led)
 
 #Foori töö tsükklis
 try:
     while True:
-        lülita_sisse(punane_auto)
-        if sininee==1:
-            lülita_välja(punane_jalakaijad)
-            lülita_sisse(roheline_jalakaijad)
-            lülita_välja(sinine)
-            sininee=0
-            roheline=1
-        ajavott(5)
-        if roheline == 1:
-            lülita_välja(roheline_jalakaijad)
-            lülita_sisse(punane_jalakaijad)
-            roheline=0
-        lülita_välja(punane_auto)
-        lülita_sisse(kollane)
-        ajavott(1)
-        lülita_välja(kollane)
-        lülita_sisse(roheline_auto)
-        ajavott(5)
-        lülita_välja(roheline_auto)
-        vilgub(kollane)
+        poll(nupp)
+        lülita_sisse(punane_led)
+        poll(nupp)
+        if nupp_vajutatud:
+            poll(nupp)
+            lülita_välja(sinine_led)
+            poll(nupp)
+            lülita_sisse(valge_led)
+            poll(nupp)
+            lülita_välja(nuppu_led)
+            poll(nupp)
+            nupp_vajutatud = False
+            poll(nupp)
+        else:
+            lülita_sisse(punane_led)
+            poll(nupp)
+
+        time.sleep(5)
+        poll(nupp)
+        lülita_välja(valge_led)
+        poll(nupp)
+        lülita_sisse(sinine_led)
+        poll(nupp)
+        lülita_välja(punane_led)
+        poll(nupp)
+        lülita_sisse(kollane_led)
+        poll(nupp)
+        time.sleep(1)
+        poll(nupp)
+        lülita_välja(kollane_led)
+        poll(nupp)
+        lülita_sisse(roheline_led)
+        poll(nupp)
+        time.sleep(5)
+        poll(nupp)
+        lülita_välja(roheline_led)
+        poll(nupp)
+        vilgub(kollane_led)
+        poll(nupp)
+
+except KeyboardInterrupt:
+    print("KeyInter")
 except:
+    print("Some exception raised")
+finally:
     GPIO.cleanup()
