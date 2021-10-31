@@ -54,9 +54,8 @@ def vilgub(tulukene):
     
 def callback(nuppu_kanal):
     global nupp_vajutatud
-    if GPIO.input(nuppu_kanal):
-        nupp_vajutatud = True
-        lülita_sisse(nuppu_led)
+    nupp_vajutatud = True
+    lülita_sisse(nuppu_led)
 
 GPIO.add_event_detect(nupp, GPIO.RISING, callback)
 
