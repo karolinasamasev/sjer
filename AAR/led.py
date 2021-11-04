@@ -1,40 +1,4 @@
-#Import
-import RPi.GPIO as GPIO
-import time
 
-#BCM or baoard
-GPIO.setmode(GPIO.BOARD)
-#to disable warnings
-GPIO.setwarnings(False)
-
-#set gpio... as an output
-GPIO.setup(37, GPIO.OUT)
-GPIO.setup(18, GPIO.OUT)
-GPIO.setup(22, GPIO.OUT)
-GPIO.setup(11, GPIO.OUT)
-GPIO.setup(31, GPIO.OUT)
-GPIO.setup(36, GPIO.OUT)
-GPIO.setup(16, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-
-#Definitsioonid
-def lülita_sisse(tulukene):
-    GPIO.output(tulukene, GPIO.HIGH)
-
-def lülita_välja(tulukene):
-    GPIO.output(tulukene, GPIO.LOW)
-
-def vilgub(tulukene):
-    for i in range(3):
-        lülita_sisse(tulukene)
-        time.sleep(1/3)
-        lülita_välja(tulukene)
-        time.sleep(1/3)
-sininee = 0
-roheline=0
-def nupuvajutus(channel):
-    global sininee
-    sininee = 1
-    lülita_sisse(sinine)
 
 #Muutujad
 punane_jalakaijad=37
