@@ -13,9 +13,9 @@ kollane_led = 5
 
 roheline_led = 7
 
-sinine_led = 8 # Punane jalakäijate jaoks
+sinine_led = 8 #punane jalakäijate jaoks
 
-valge_led = 10 # Roheline jalakäijate jaoks
+valge_led = 10 #roheline jalakäijate jaoks
 
 nuppu_led = 12
 
@@ -31,35 +31,35 @@ GPIO.setup(roheline_led, GPIO.OUT)
 GPIO.setup(sinine_led, GPIO.OUT)
 GPIO.setup(valge_led, GPIO.OUT)
 GPIO.setup(nuppu_led, GPIO.OUT, initial = GPIO.LOW)
-GPIO.setup(nupp, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
+GPIO.setup(nupp, GPIO.IN, pull_up_down = GPIO.PUD_DOWN) #tehtud tarkvara poolt
 
-#Definitsioonid
-def lülita_sisse(tulukene):
-    GPIO.output(tulukene, GPIO.HIGH)
+#definitsioonid
+def lülita_sisse(tuli):
+    GPIO.output(tuli, GPIO.HIGH)
 
-def lülita_välja(tulukene):
-    GPIO.output(tulukene, GPIO.LOW)
+def lülita_välja(tuli):
+    GPIO.output(tuli, GPIO.LOW)
 
-def vilgub(tulukene):
+def vilgub(tuli):
     
     for i in range(2):
-        lülita_sisse(tulukene)
+        lülita_sisse(tuli)
         time.sleep(0.4)
-        lülita_välja(tulukene)
+        lülita_välja(tuli)
         time.sleep(0.4)
-    lülita_sisse(tulukene)
+    lülita_sisse(tuli)
     time.sleep(0.4)
-    lülita_välja(tulukene)
+    lülita_välja(tuli)
     
     
-def callback(nuppu_kanal):
+def callback(nuppu_kanal): #lülitab sisse ledi
     global nupp_vajutatud
     nupp_vajutatud = True
     lülita_sisse(nuppu_led)
 
-GPIO.add_event_detect(nupp, GPIO.RISING, callback)
+GPIO.add_event_detect(nupp, GPIO.RISING, callback) #lisab kogu protsessi "tagaplaanile"
 
-#Foori töö tsükklis
+#tsükkel foori töö jaoks
 try:
     while True:
         lülita_sisse(punane_led)

@@ -11,8 +11,8 @@ punane_led = 3
 kollane_led = 5
 roheline_led = 7
 
-sinine_led = 8 # Punane jalakäijate jaoks
-valge_led = 10 # Roheline jalakäijate jaoks
+sinine_led = 8 #punane jalakäijate jaoks
+valge_led = 10 #roheline jalakäijate jaoks
 
 nuppu_led = 12
 nupp = 37
@@ -27,42 +27,42 @@ GPIO.setup(roheline_led, GPIO.OUT)
 GPIO.setup(sinine_led, GPIO.OUT)
 GPIO.setup(valge_led, GPIO.OUT)
 GPIO.setup(nuppu_led, GPIO.OUT, initial = GPIO.LOW)
-GPIO.setup(nupp, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
+GPIO.setup(nupp, GPIO.IN, pull_up_down = GPIO.PUD_DOWN) #tehtud tarkvara poolt
 
-#Definitsioonid
-def lülita_sisse(tulukene):
-    GPIO.output(tulukene, GPIO.HIGH)
+#definitsioonid
+def lülita_sisse(tuli):
+    GPIO.output(tuli, GPIO.HIGH) 
 
-def lülita_välja(tulukene):
-    GPIO.output(tulukene, GPIO.LOW)
+def lülita_välja(tuli):
+    GPIO.output(tuli, GPIO.LOW)
 
-def vilgub(tulukene):
-    poll(nupp)
+def vilgub(tuli):
+    poll(nupp) #kutsub välja f-ni, mis kontrollib, kas nupp on vajutatud
     for i in range(2):
         poll(nupp)
-        lülita_sisse(tulukene)
+        lülita_sisse(tuli)
+        poll(nupp)
+        time.sleep(0.4) #kuna time sleep on välja kutsutud 5 korda, viivitus kestab 0.4 sek 
+        poll(nupp)
+        lülita_välja(tuli)
         poll(nupp)
         time.sleep(0.4)
         poll(nupp)
-        lülita_välja(tulukene)
-        poll(nupp)
-        time.sleep(0.4)
-        poll(nupp)
-    lülita_sisse(tulukene)
+    lülita_sisse(tuli)
     poll(nupp)
     time.sleep(0.4)
     poll(nupp)
-    lülita_välja(tulukene)
+    lülita_välja(tuli)
     poll(nupp)
     
-def poll(nuppu_kanal):
-    print(GPIO.input(nuppu_kanal)) # Inputi kontroll
+def poll(nuppu_kanal): #funktsioon nuppu vajutamise kontroll
+    print(GPIO.input(nuppu_kanal)) #inputi kontroll
     global nupp_vajutatud
     if GPIO.input(nuppu_kanal):
         lülita_sisse(nuppu_led)
         nupp_vajutatud = True
 
-#Foori töö tsükklis
+#tsükkel foori töö jaoks
 try:
     while True:
         poll(nupp)
